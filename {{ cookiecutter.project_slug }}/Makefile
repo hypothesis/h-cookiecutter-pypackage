@@ -11,8 +11,8 @@ help:
 	@echo "make coverage          Print the unit test coverage report"
 	@echo "make clean             Delete development artefacts (cached files, "
 	@echo "                       dependencies, etc)"
-        @echo "make template          Replay the cookiecutter project template over this"
-        @echo "                       project. Warning! This can destroy changes."
+	@echo "make template          Replay the cookiecutter project template over this"
+	@echo "                       project. Warning! This can destroy changes."
 
 
 .PHONY: lint
