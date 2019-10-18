@@ -1,0 +1,103 @@
+import os
+
+from setuptools import setup, find_packages
+
+PACKAGE = "{{ cookiecutter.pkg_name }}"
+
+INSTALL_REQUIRES = [
+]
+
+TESTS_REQUIRE = INSTALL_REQUIRES + [
+    'pytest',
+    'coverage',
+]
+
+
+def from_file(filename):
+    with open(filename) as fh:
+        return fh.read()
+
+
+def read_egg_version():
+    pkg_info_file = PACKAGE + '.egg-info/PKG-INFO'
+    if not os.path.isfile(pkg_info_file):
+        return None
+
+    with open(pkg_info_file) as fh:
+        for line in fh:
+            if line.startswith('Version'):
+                return line.strip().split('Version: ')[-1]
+
+
+def get_version(major_version, build_var='BUILD'):
+    # If we have a build argument we should honour it no matter what
+    build = os.environ.get(build_var)
+    if build:
+        return major_version + '.' + build
+
+    # If not, we should try and read it from the .egg-info/ data
+
+    # We need to do this for source distributions, as setup.py is re-run when
+    # installed this way, and we would always get 'dev0' as the version
+    # Wheels and binary installs don't work this way and read from PKG-INFO
+    # for them selves
+    egg_version = read_egg_version()
+    if egg_version:
+        return egg_version
+
+    # Otherwise create a 'dev' build which will be counted by pip as 'later'
+    # than the major version no matter what
+    return major_version + '.dev0'
+
+
+setup(
+    # Metadata
+    # https://docs.python.org/3/distutils/setupscript.html#additional-meta-data
+
+    name=PACKAGE,
+    version=get_version(major_version='1.0'),
+    description="",
+    long_description=from_file('README.md'),
+    long_description_content_type='text/markdown',
+
+    author="Hypothesis Engineering Team",
+    author_email="eng@list.hypothes.is",
+    maintainer="Hypothesis Engineering Team",
+    maintainer_email="eng@list.hypothes.is",
+    url="https://web.hypothes.is/",
+    project_urls={
+        'Source': 'https://github.com/hypothesis/{{ cookiecutter.project_slug }}'
+    },
+
+    # From: https://pypi.org/pypi?:action=list_classifiers
+    classifiers=[
+        # Maybe if we want to put people off less we can change this
+        'Development Status :: 2 - Pre-Alpha',
+        'Programming Language :: Python :: 3.6'
+    ],
+
+    license='License :: OSI Approved :: BSD License',
+    platforms=['Operating System :: OS Independent'],
+
+    # Contents and dependencies
+
+    packages=find_packages(),
+    install_requires=INSTALL_REQUIRES,
+
+    # Add support for pip install .[test]
+    extras_require={
+        'tests': TESTS_REQUIRE
+    },
+
+    # Adding pytest support for `python setup.py test` (also see setup.cfg)
+    test_suite="tests",
+    setup_requires=[
+        'pytest-runner',
+
+        # Try and prevent long-description bug when uploading to PyPI
+        'setuptools>=38.6.0',
+        'wheel>=0.31.0',
+        'twine>=1.11.0',
+    ],
+    tests_require=TESTS_REQUIRE,
+)
