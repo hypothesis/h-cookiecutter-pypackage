@@ -1,7 +1,7 @@
 import functools
-import pytest
-
 from unittest import mock
+
+import pytest
 
 
 def _autopatcher(request, target, **kwargs):

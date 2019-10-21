@@ -1,24 +1,39 @@
+"""
+A script for re-applying a cookiecutter template over a project
+"""
+import fnmatch
 import json
 import os
 import os.path
 import shutil
-import fnmatch
-
 from argparse import ArgumentParser
-from cookiecutter.main import cookiecutter
 from distutils.dir_util import mkpath
 from tempfile import mkdtemp
 
+from cookiecutter.main import cookiecutter
 
-parser = ArgumentParser()
-parser.add_argument("-c", "--config", required=True)
-parser.add_argument("-t", "--template")
-parser.add_argument("-o", "--output-directory")
+PARSER = ArgumentParser()
+PARSER.add_argument("-c", "--config", required=True)
+PARSER.add_argument("-t", "--template")
+PARSER.add_argument("-o", "--output-directory")
 
 
 class CookieCutter:
+    """
+    A collection of cookie cutter related functions
+    """
+
     @classmethod
     def replay(cls, project_dir, config, template=None):
+        """
+        Replay a project based on the config provided. The value in '_template'
+        will be used to decide which template to replay if none is provided.
+
+        :param project_dir: The target directory
+        :param config: The config to apply
+        :param template: The template to apply
+        :return: The name of the project created
+        """
         project_dir = os.path.abspath(project_dir)
         disable_replay = config.get("options", {}).get("disable_replay")
 
@@ -48,6 +63,10 @@ class CookieCutter:
 
     @classmethod
     def _matches_pattern(cls, filename, skip_patterns):
+        """
+        Check if the filename matches any of the patterns in skip_patterns.
+        These patterns are bash style globs like 'thing/*.txt'
+        """
         for pattern in skip_patterns:
             if fnmatch.fnmatch(filename, pattern):
                 print(f"Skipping: '{filename}' as it matched pattern '{pattern}'")
@@ -57,6 +76,10 @@ class CookieCutter:
 
     @classmethod
     def _copy_tree(cls, source_dir, target_dir, skip_patterns=None):
+        """
+        Copy a directory over another one optionally skipping files which match
+        the specified glob style patterns like 'thing/*.txt'
+        """
         if not skip_patterns:
             skip_patterns = []
 
@@ -79,6 +102,15 @@ class CookieCutter:
 
     @classmethod
     def render_template(cls, project_dir, config, template=None):
+        """
+        Create a project based on the config provided. The value in '_template'
+        will be used to decide which template to replay if none is provided.
+
+        :param project_dir: The target directory
+        :param config: The config to apply
+        :param template: The template to apply
+        :return: The name of the project created
+        """
         if template is None:
             template = cls.get_template_from_config(config)
 
@@ -95,20 +127,21 @@ class CookieCutter:
 
     @classmethod
     def get_template_from_config(cls, config):
+        """Read the template from a config file"""
+
+        # This is basically here to hide the standard cookiecutter secret
+        # location to read this from the consumer
         return config["_template"]
 
 
-def read_config(config_file):
-    with open(config_file) as fh:
-        config = json.load(fh)
-
-    return config
-
-
 def run():
-    args = parser.parse_args()
+    """Main entry-point to run the script"""
 
-    config = read_config(args.config)
+    args = PARSER.parse_args()
+
+    with open(args.config) as handle:
+        config = json.load(handle)
+
     template = args.template or CookieCutter.get_template_from_config(config)
 
     project_name = CookieCutter.replay(

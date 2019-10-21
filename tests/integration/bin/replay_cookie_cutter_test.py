@@ -1,5 +1,6 @@
 import os
 import os.path
+
 import pytest
 
 from bin.replay_cookie_cutter import CookieCutter
@@ -9,9 +10,9 @@ class TestCookieCutter:
     @classmethod
     def _get_project_root(cls):
         this_file = os.path.realpath(__file__)
-        return os.path.abspath(
-            os.path.join(os.path.basename(this_file), "../../../../")
-        )
+        root = os.path.abspath(os.path.join(os.path.dirname(this_file), "../../../"))
+
+        return root
 
     def test_it_can_get_template_from_config(self, config):
         template = CookieCutter.get_template_from_config(config)
