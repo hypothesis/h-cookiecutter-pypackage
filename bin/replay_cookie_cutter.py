@@ -70,8 +70,8 @@ def run():
     template = args.template or CookieCutter.get_template_from_config(config)
 
     project_name = CookieCutter.replay(
-        project_dir=args.directory or os.getcwd(),
-        config=args.config,
+        project_dir=args.output_directory or os.getcwd(),
+        config=config,
         template=template,
     )
 
