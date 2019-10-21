@@ -3,6 +3,7 @@ import os
 from setuptools import setup, find_packages
 
 PACKAGE = "{{ cookiecutter.pkg_name }}"
+VERSION = "{{ cookiecutter.version }}"
 
 INSTALL_REQUIRES = [
 ]
@@ -55,7 +56,7 @@ setup(
     # https://docs.python.org/3/distutils/setupscript.html#additional-meta-data
 
     name=PACKAGE,
-    version=get_version(major_version='1.0'),
+    version=get_version(major_version=VERSION),
     description="",
     long_description=from_file('README.md'),
     long_description_content_type='text/markdown',
