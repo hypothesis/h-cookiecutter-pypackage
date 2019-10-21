@@ -1,7 +1,15 @@
 {
     "project_name": "Hypothesis Python Module Cookiecutter Template",
-    "description": "A template for ",
+    "description": "A template for creating Python modules",
     "project_slug": "h-cookiecutter-pypackage",
     "pkg_name": "h_cookiecutter_pypackage",
+    "options": {
+        "disable_replay": [
+            "README.md",
+            "setup.py",
+            ".coveragerc",
+            ".github/*"
+        ]
+    },
     "_template": "."
 }

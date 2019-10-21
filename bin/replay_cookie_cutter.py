@@ -2,10 +2,11 @@ import json
 import os
 import os.path
 import shutil
+import fnmatch
 
 from argparse import ArgumentParser
 from cookiecutter.main import cookiecutter
-from distutils.dir_util import copy_tree
+from distutils.dir_util import mkpath
 from tempfile import mkdtemp
 
 
@@ -19,6 +20,7 @@ class CookieCutter:
     @classmethod
     def replay(cls, project_dir, config, template=None):
         project_dir = os.path.abspath(project_dir)
+        disable_replay = config.get('options', {}).get('disable_replay')
 
         temp_dir = mkdtemp()
 
@@ -31,12 +33,44 @@ class CookieCutter:
                     'The project created does not match the project directory: '
                     f'Created {project_name}, existing {current_name}')
 
-            copy_tree(os.path.join(temp_dir, project_name), project_dir)
+            # copy_tree(os.path.join(temp_dir, project_name), project_dir)
+            cls._copy_tree(
+                os.path.join(temp_dir, project_name), project_dir,
+                skip_patterns=disable_replay)
 
             return project_name
 
         finally:
             shutil.rmtree(temp_dir)
+
+    @classmethod
+    def _matches_pattern(cls, filename, skip_patterns):
+        for pattern in skip_patterns:
+            if fnmatch.fnmatch(filename, pattern):
+                print(f"Skipping: '{filename}' as it matched pattern '{pattern}'")
+                return True
+
+        return False
+
+    @classmethod
+    def _copy_tree(cls, source_dir, target_dir, skip_patterns=None):
+        if not skip_patterns:
+            skip_patterns = []
+
+        all_files = []
+        for parent_dir, _, filenames in os.walk(source_dir):
+            for filename in filenames:
+                rel_path = os.path.relpath(os.path.join(parent_dir, filename), source_dir)
+
+                if not cls._matches_pattern(rel_path, skip_patterns):
+                    all_files.append(rel_path)
+
+        for rel_path in all_files:
+            source = os.path.join(source_dir, rel_path)
+            target = os.path.join(target_dir, rel_path)
+
+            mkpath(os.path.dirname(target))
+            shutil.copyfile(source, target)
 
     @classmethod
     def render_template(cls,  project_dir, config, template=None):

@@ -1,6 +1,13 @@
 {
-  "project_name": "Hypothesis Example Library",
-  "description": "An example library",
-  "project_slug": "{{ cookiecutter.project_name | lower | replace(' ', '-') | replace('hypothesis', 'h') }}",
-  "pkg_name": "{{ cookiecutter.project_slug | replace('-', '_') }}"
+    "project_name": "Hypothesis Example Library",
+    "description": "An example library",
+    "project_slug": "{{ cookiecutter.project_name | lower | replace(' ', '-') | replace('hypothesis', 'h') }}",
+    "pkg_name": "{{ cookiecutter.project_slug | replace('-', '_') }}",
+
+    "options": {
+        "disable_replay": [
+            "README.md",
+            "setup.py"
+        ]
+    }
 }
