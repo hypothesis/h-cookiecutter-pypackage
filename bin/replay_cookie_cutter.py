@@ -17,13 +17,13 @@ parser.add_argument('-o', '--output-directory')
 
 class CookieCutter:
     @classmethod
-    def replay(cls, template, config, project_dir):
+    def replay(cls, project_dir, config, template=None):
         project_dir = os.path.abspath(project_dir)
 
         temp_dir = mkdtemp()
 
         try:
-            project_name = cls.render_template(template, config, target_dir=temp_dir)
+            project_name = cls.render_template(temp_dir, config, template)
             current_name = os.path.basename(project_dir)
 
             if project_name != current_name:
@@ -39,33 +39,40 @@ class CookieCutter:
             shutil.rmtree(temp_dir)
 
     @classmethod
-    def render_template(cls, template, config, target_dir=None):
+    def render_template(cls,  project_dir, config, template=None):
+        if template is None:
+            template = cls.get_template_from_config(config)
+
         cookiecutter(
             template=template, no_input=True,
-            extra_context=config, output_dir=target_dir)
+            extra_context=config, output_dir=project_dir)
 
-        items = os.listdir(target_dir)
+        items = os.listdir(project_dir)
         assert len(items) == 1, 'There is a unique file in the output dir'
         return items[0]
 
     @classmethod
-    def read_config(cls, config_file):
-        with open(config_file) as fh:
-            config = json.load(fh)
+    def get_template_from_config(cls, config):
+        return config['_template']
 
-        return config['_template'], config
+
+def read_config(config_file):
+    with open(config_file) as fh:
+        config = json.load(fh)
+
+    return config
 
 
 def run():
     args = parser.parse_args()
 
-    template, config = CookieCutter.read_config(args.config)
-    template = args.template or template
+    config = read_config(args.config)
+    template = args.template or CookieCutter.get_template_from_config(config)
 
     project_name = CookieCutter.replay(
-        template=template,
+        project_dir=args.directory or os.getcwd(),
         config=args.config,
-        project_dir=args.directory or os.getcwd()
+        template=template,
     )
 
     print(f"Recreated {project_name} from {template}")
