@@ -63,3 +63,51 @@ jobs:
 
     - name: Check coverage report
       run: cat coverage_passed
+
+  package:
+    name: Package
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v1
+
+    - name: Set up Python 3.6
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.6
+
+    - name: Package
+      run: |
+        pip install twine
+        BUILD=`date +%Y%m%d.%H%M%S` python setup.py bdist_wheel sdist
+        twine check dist/*
+
+    - name: Archive packages
+      uses: actions/upload-artifact@v1
+      with:
+        name: dist
+        path: dist
+
+  publish:
+    name: Publish
+    needs: package
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+
+    steps:
+    - name: Download built packages
+      uses: actions/download-artifact@v1
+      with:
+        name: dist
+
+    - name: Set up Python 3.6
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.6
+
+    - name: Upload to PyPI
+      run: |
+        pip install twine
+        twine upload -u __token__ -p ${% raw %}{{ secrets.PYPI_TOKEN }}{% endraw %} dist/*

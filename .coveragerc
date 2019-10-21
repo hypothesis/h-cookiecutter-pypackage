@@ -1,0 +1,11 @@
+[run]
+branch = True
+parallel = True
+source =
+    bin
+    tests/integration
+
+[report]
+show_missing = True
+precision = 2
+fail_under = 100.00
