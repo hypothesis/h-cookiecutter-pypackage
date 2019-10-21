@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 from setup_extra import Package
 
 
-package = Package(name="{{ cookiecutter.pkg_name }}", version="1.0")
+package = Package(name="h_cookiecutter_pypackage", version="1.0")
 
 INSTALL_REQUIRES = []
 TESTS_REQUIRE = INSTALL_REQUIRES + []
