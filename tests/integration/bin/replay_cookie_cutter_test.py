@@ -55,20 +55,18 @@ class TestCookieCutter:
         self.assert_file_contains(makefile, "tox")
 
     def test_it_can_replay_ignoring_files(self, tmp_path, config):
-        config['options'] = {'disable_replay': ['Makef*']}
+        config["options"] = {"disable_replay": ["Makef*"]}
 
         # Render out the project
         package_name = CookieCutter.render_template(
-            project_dir=tmp_path, config=config,
-            template=self._get_project_root()
+            project_dir=tmp_path, config=config, template=self._get_project_root()
         )
         project_dir = os.path.join(tmp_path, package_name)
 
         makefile = self.write_string(project_dir, "Makefile", "Nonsense")
 
         CookieCutter.replay(
-            project_dir=project_dir, config=config,
-            template=self._get_project_root()
+            project_dir=project_dir, config=config, template=self._get_project_root()
         )
 
         self.assert_file_contains(makefile, "Nonsense")

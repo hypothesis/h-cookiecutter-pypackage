@@ -11,16 +11,16 @@ from tempfile import mkdtemp
 
 
 parser = ArgumentParser()
-parser.add_argument('-c', '--config', required=True)
-parser.add_argument('-t', '--template')
-parser.add_argument('-o', '--output-directory')
+parser.add_argument("-c", "--config", required=True)
+parser.add_argument("-t", "--template")
+parser.add_argument("-o", "--output-directory")
 
 
 class CookieCutter:
     @classmethod
     def replay(cls, project_dir, config, template=None):
         project_dir = os.path.abspath(project_dir)
-        disable_replay = config.get('options', {}).get('disable_replay')
+        disable_replay = config.get("options", {}).get("disable_replay")
 
         temp_dir = mkdtemp()
 
@@ -30,13 +30,16 @@ class CookieCutter:
 
             if project_name != current_name:
                 raise EnvironmentError(
-                    'The project created does not match the project directory: '
-                    f'Created {project_name}, existing {current_name}')
+                    "The project created does not match the project directory: "
+                    f"Created {project_name}, existing {current_name}"
+                )
 
             # copy_tree(os.path.join(temp_dir, project_name), project_dir)
             cls._copy_tree(
-                os.path.join(temp_dir, project_name), project_dir,
-                skip_patterns=disable_replay)
+                os.path.join(temp_dir, project_name),
+                project_dir,
+                skip_patterns=disable_replay,
+            )
 
             return project_name
 
@@ -60,7 +63,9 @@ class CookieCutter:
         all_files = []
         for parent_dir, _, filenames in os.walk(source_dir):
             for filename in filenames:
-                rel_path = os.path.relpath(os.path.join(parent_dir, filename), source_dir)
+                rel_path = os.path.relpath(
+                    os.path.join(parent_dir, filename), source_dir
+                )
 
                 if not cls._matches_pattern(rel_path, skip_patterns):
                     all_files.append(rel_path)
@@ -73,21 +78,24 @@ class CookieCutter:
             shutil.copyfile(source, target)
 
     @classmethod
-    def render_template(cls,  project_dir, config, template=None):
+    def render_template(cls, project_dir, config, template=None):
         if template is None:
             template = cls.get_template_from_config(config)
 
         cookiecutter(
-            template=template, no_input=True,
-            extra_context=config, output_dir=project_dir)
+            template=template,
+            no_input=True,
+            extra_context=config,
+            output_dir=project_dir,
+        )
 
         items = os.listdir(project_dir)
-        assert len(items) == 1, 'There is a unique file in the output dir'
+        assert len(items) == 1, "There is a unique file in the output dir"
         return items[0]
 
     @classmethod
     def get_template_from_config(cls, config):
-        return config['_template']
+        return config["_template"]
 
 
 def read_config(config_file):
@@ -113,7 +121,5 @@ def run():
     print("You should now check for updated files...")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     run()
-
-
