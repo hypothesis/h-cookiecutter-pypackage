@@ -1,1 +1,1 @@
-../../../tests/integration/conftest.py
+../integration/conftest.py
