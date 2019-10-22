@@ -29,7 +29,8 @@ jobs:
     - name: Lint with pylint
       run: |
         pip install pylint
-        pylint --reports=y `python setup.py  --name` tests
+        pylint --reports=y `python setup.py  --name` bin
+        pylint --reports=y --rcfile=tests/.pylintrc tests
 
     - name: Run unit tests
       continue-on-error: true

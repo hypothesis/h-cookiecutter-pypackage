@@ -82,14 +82,14 @@ class TestCookieCutter:
 
     def write_string(self, directory, filename, content):
         filename = os.path.join(directory, filename)
-        with open(filename, "w") as fh:
-            fh.write(content)
+        with open(filename, "w") as handle:
+            handle.write(content)
 
         return filename
 
     def assert_file_contains(self, path, content):
-        with open(path) as fh:
-            text = fh.read()
+        with open(path) as handle:
+            text = handle.read()
 
         assert content in text
 
