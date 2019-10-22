@@ -117,7 +117,7 @@ class TestCookieCutter:
         new_name = os.path.join(tmp_path, "something_new")
         shutil.move(existing_project, new_name)
 
-        with pytest.raises(EnvironmentError):
+        with pytest.raises(ValueError):
             CookieCutter.replay(project_dir=new_name, config=config)
 
     @pytest.fixture

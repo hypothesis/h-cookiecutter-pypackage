@@ -29,9 +29,21 @@ class CookieCutter:
         will be used to decide which template to replay if none is provided.
 
         :param project_dir: The target directory
+        :type project_dir: str
+
         :param config: The config to apply
+        :type config: dict
+
         :param template: The template to apply
+        :type template: str
+
         :return: The name of the project created
+        :rtype: str
+
+        :raise ValueError: If cookiecutter replaying would change the
+            name of the project (the name of the project created by replaying
+            the cookiecutter project template is different from the currently
+            existing name of the project)
         """
         project_dir = os.path.abspath(project_dir)
         disable_replay = config.get("options", {}).get("disable_replay")
@@ -43,7 +55,7 @@ class CookieCutter:
             current_name = os.path.basename(project_dir)
 
             if project_name != current_name:
-                raise EnvironmentError(
+                raise ValueError(
                     "The project created does not match the project directory: "
                     f"Created {project_name}, existing {current_name}"
                 )
@@ -105,9 +117,16 @@ class CookieCutter:
         will be used to decide which template to replay if none is provided.
 
         :param project_dir: The target directory
+        :type project_dir: str
+
         :param config: The config to apply
+        :type config: dict
+
         :param template: The template to apply
+        :type template: str
+
         :return: The name of the project created
+        :rtype: str
         """
         if template is None:
             template = cls.get_template_from_config(config)
