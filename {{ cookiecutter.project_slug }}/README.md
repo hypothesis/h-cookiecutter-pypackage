@@ -45,3 +45,17 @@ You can install a dynamic link to this code for development (so that as the
 code changes, your installed code does too) with:
 
     pip install --editable .
+    
+Updating boilerplate
+--------------------
+
+The config and other boilerplate files in this project can be updated by running:
+
+    make template
+
+This will read the `.cookiecutter.json` file and replay the templated files, 
+overwriting local changes.
+
+If you would like a particular file to be preserved you can add it
+to: `"options.disable_replay"` in the `.cookiecutter.json` file. You can also
+just not commit the changes made if you don't like them.
