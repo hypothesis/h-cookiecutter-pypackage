@@ -8,6 +8,7 @@
             "README.md",
             "setup.py",
             ".coveragerc",
+            "pytest.ini",
             ".github/*"
         ]
     },
