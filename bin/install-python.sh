@@ -24,6 +24,13 @@ then
   exit
 fi
 
+# Exit if we're running on Jenkins.
+# On Jenkins we run the tests in Docker and we just want to use the versions of
+# Python provided in the Docker container.
+if [ -n "${JENKINS_URL+set}" ]; then
+  exit
+fi
+
 # Loop over every $python_version in the .python-version file.
 while IFS= read -r python_version
 do
