@@ -14,7 +14,6 @@ from cookiecutter.main import cookiecutter
 
 PARSER = ArgumentParser()
 PARSER.add_argument("-c", "--config", required=True)
-PARSER.add_argument("-t", "--template")
 PARSER.add_argument("-o", "--output-directory")
 
 
@@ -49,7 +48,6 @@ class CookieCutter:
                     f"Created {project_name}, existing {current_name}"
                 )
 
-            # copy_tree(os.path.join(temp_dir, project_name), project_dir)
             cls._copy_tree(
                 os.path.join(temp_dir, project_name),
                 project_dir,
@@ -142,17 +140,14 @@ def run():
     with open(args.config) as handle:
         config = json.load(handle)
 
-    template = args.template or CookieCutter.get_template_from_config(config)
-
     project_name = CookieCutter.replay(
-        project_dir=args.output_directory or os.getcwd(),
-        config=config,
-        template=template,
+        project_dir=args.output_directory or os.getcwd(), config=config
     )
 
+    template = CookieCutter.get_template_from_config(config)
     print(f"Recreated {project_name} from {template}")
     print("You should now check for updated files...")
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     run()

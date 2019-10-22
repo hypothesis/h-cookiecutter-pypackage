@@ -1,19 +1,52 @@
+import json
 import os
 import os.path
+import shutil
+from unittest import mock
 
 import pytest
 
-from bin.replay_cookie_cutter import CookieCutter
+from bin.replay_cookie_cutter import CookieCutter, run
+
+
+class TestScript:
+    def test_sanity(self, PARSER, CookieCutter, config):
+        # This is unfortunately kind of a one and done test
+        # It hits everything it needs to in one go (json, args, calls)
+        run()
+
+        CookieCutter.replay.assert_called_once_with(
+            project_dir=mock.sentinel.output_directory, config=config
+        )
+
+    @pytest.fixture
+    def config(self):
+        return {"some_config_here": True, "_template": "config_template"}
+
+    @pytest.fixture
+    def config_file(self, config, tmp_path):
+        filename = os.path.join(tmp_path, ".cookiecutter.json")
+        with open(filename, "w") as handle:
+            json.dump(config, handle)
+
+        return filename
+
+    @pytest.fixture
+    def PARSER(self, patch, config_file):
+        PARSER = patch("bin.replay_cookie_cutter.PARSER")
+
+        args = PARSER.parse_args()
+        args.config = config_file
+        args.output_directory = mock.sentinel.output_directory
+
+        return PARSER
+
+    @pytest.fixture
+    def CookieCutter(self, patch):
+        return patch("bin.replay_cookie_cutter.CookieCutter")
 
 
 class TestCookieCutter:
-    @classmethod
-    def _get_project_root(cls):
-        this_file = os.path.realpath(__file__)
-        root = os.path.abspath(os.path.join(os.path.dirname(this_file), "../../../"))
-
-        return root
-
     def test_it_can_get_template_from_config(self, config):
         template = CookieCutter.get_template_from_config(config)
 
@@ -31,23 +64,29 @@ class TestCookieCutter:
             tmp_path, config["project_slug"], config["pkg_name"], "__init__.py"
         )
 
-    def test_it_can_replay_template(self, tmp_path, config):
-        # Render out the project
-        package_name = CookieCutter.render_template(
-            project_dir=tmp_path, config=config, template=self._get_project_root()
-        )
-        project_dir = os.path.join(tmp_path, package_name)
+    def test_render_will_read_template_from_config(self, tmp_path, cookiecutter):
+        config = {"_template": mock.sentinel.template}
 
+        CookieCutter.render_template(tmp_path, config=config)
+
+        cookiecutter.assert_called_once_with(
+            template=mock.sentinel.template,
+            no_input=True,
+            extra_context=config,
+            output_dir=tmp_path,
+        )
+
+    def test_it_can_replay_template(self, tmp_path, existing_project, config):
         # Mess with it
-        setup_py = os.path.join(project_dir, "setup.py")
+        setup_py = os.path.join(existing_project, "setup.py")
         os.unlink(setup_py)
-        makefile = self.write_string(project_dir, "Makefile", "Nonsense")
-        another_file = self.write_string(project_dir, "something_new.txt", "Nonsense 2")
+        makefile = self.write_string(existing_project, "Makefile", "Nonsense")
+        another_file = self.write_string(
+            existing_project, "something_new.txt", "Nonsense 2"
+        )
 
         # Replay and check
-        CookieCutter.replay(
-            project_dir=project_dir, config=config, template=self._get_project_root()
-        )
+        CookieCutter.replay(project_dir=existing_project, config=config)
 
         self.assert_file_exists(setup_py)
         self.assert_file_exists(makefile)
@@ -56,21 +95,43 @@ class TestCookieCutter:
         self.assert_file_contains(makefile, "tox")
 
     def test_it_can_replay_ignoring_files(self, tmp_path, config):
+        # If we disable replay on a file
         config["options"] = {"disable_replay": ["Makef*"]}
 
-        # Render out the project
-        package_name = CookieCutter.render_template(
-            project_dir=tmp_path, config=config, template=self._get_project_root()
-        )
+        # ... and render out the project
+        package_name = CookieCutter.render_template(project_dir=tmp_path, config=config)
         project_dir = os.path.join(tmp_path, package_name)
 
+        # ... and add some custom nonsense in that file
         makefile = self.write_string(project_dir, "Makefile", "Nonsense")
 
-        CookieCutter.replay(
-            project_dir=project_dir, config=config, template=self._get_project_root()
-        )
+        # Then when we replay the project
+        CookieCutter.replay(project_dir=project_dir, config=config)
 
+        # The nonsense is still in the file
         self.assert_file_contains(makefile, "Nonsense")
+
+    def test_if_fails_when_template_does_not_match_project(
+        self, tmp_path, existing_project, config
+    ):
+        new_name = os.path.join(tmp_path, "something_new")
+        shutil.move(existing_project, new_name)
+
+        with pytest.raises(EnvironmentError):
+            CookieCutter.replay(project_dir=new_name, config=config)
+
+    @pytest.fixture
+    def cookiecutter(self, patch, tmp_path):
+        cookiecutter = patch("bin.replay_cookie_cutter.cookiecutter")
+        # If we are called, make it look like we produced a directory in tmp
+        cookiecutter.side_effect = os.mkdir(os.path.join(tmp_path, "example_project"))
+        return cookiecutter
+
+    @pytest.fixture
+    def existing_project(self, tmp_path, config):
+        project_name = CookieCutter.render_template(project_dir=tmp_path, config=config)
+
+        return os.path.join(tmp_path, project_name)
 
     @pytest.fixture
     def config(self):
@@ -95,3 +156,10 @@ class TestCookieCutter:
 
     def assert_file_exists(self, parent_dir, *parts):
         assert os.path.isfile(os.path.join(parent_dir, *parts))
+
+    @classmethod
+    def _get_project_root(cls):
+        this_file = os.path.realpath(__file__)
+        root = os.path.abspath(os.path.join(os.path.dirname(this_file), "../../../"))
+
+        return root
