@@ -76,7 +76,7 @@ class TestCookieCutter:
             output_dir=tmp_path,
         )
 
-    def test_it_can_replay_template(self, tmp_path, existing_project, config):
+    def test_it_can_replay_template(self, existing_project, config):
         # Mess with it
         setup_py = os.path.join(existing_project, "setup.py")
         os.unlink(setup_py)
