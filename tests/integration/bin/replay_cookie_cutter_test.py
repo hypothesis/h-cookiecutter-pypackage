@@ -10,7 +10,7 @@ from bin.replay_cookie_cutter import CookieCutter, run
 
 
 class TestScript:
-    def test_sanity(self, PARSER, CookieCutter, config):
+    def test_sanity(self, CookieCutter, config):
         # This is unfortunately kind of a one and done test
         # It hits everything it needs to in one go (json, args, calls)
         run()
@@ -31,7 +31,7 @@ class TestScript:
 
         return filename
 
-    @pytest.fixture
+    @pytest.fixture(autouse=True)
     def PARSER(self, patch, config_file):
         PARSER = patch("bin.replay_cookie_cutter.PARSER")
 
