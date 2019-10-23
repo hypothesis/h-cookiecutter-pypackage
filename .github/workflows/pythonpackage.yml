@@ -17,7 +17,7 @@ jobs:
 
     - name: Check formatting
       run: |
-        pip install black
+        pip install black isort
         black --check src tests bin
         isort --recursive --quiet --check-only .
 
