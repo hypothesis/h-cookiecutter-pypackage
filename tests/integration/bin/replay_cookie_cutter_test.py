@@ -10,7 +10,7 @@ from bin.replay_cookie_cutter import CookieCutter, run
 
 
 class TestScript:
-    def test_sanity(self, PARSER, CookieCutter, config):
+    def test_sanity(self, CookieCutter, config):
         # This is unfortunately kind of a one and done test
         # It hits everything it needs to in one go (json, args, calls)
         run()
@@ -31,7 +31,7 @@ class TestScript:
 
         return filename
 
-    @pytest.fixture
+    @pytest.fixture(autouse=True)
     def PARSER(self, patch, config_file):
         PARSER = patch("bin.replay_cookie_cutter.PARSER")
 
@@ -76,7 +76,7 @@ class TestCookieCutter:
             output_dir=tmp_path,
         )
 
-    def test_it_can_replay_template(self, tmp_path, existing_project, config):
+    def test_it_can_replay_template(self, existing_project, config):
         # Mess with it
         setup_py = os.path.join(existing_project, "setup.py")
         os.unlink(setup_py)
@@ -117,7 +117,7 @@ class TestCookieCutter:
         new_name = os.path.join(tmp_path, "something_new")
         shutil.move(existing_project, new_name)
 
-        with pytest.raises(EnvironmentError):
+        with pytest.raises(ValueError):
             CookieCutter.replay(project_dir=new_name, config=config)
 
     @pytest.fixture

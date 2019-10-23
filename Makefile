@@ -55,4 +55,4 @@ clean:
 
 .PHONY: python
 python:
-	@./bin/install-python
+	@./bin/install-python.sh

@@ -13,7 +13,7 @@
 # Usage
 # =====
 #
-# $ ./bin/install-python
+# $ ./bin/install-python.sh
 
 # Exit if we're running on Travis CI.
 # On Travis we just want to use the versions of Python provided in the Travis
