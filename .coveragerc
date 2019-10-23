@@ -3,14 +3,14 @@ branch = True
 parallel = True
 source =
     bin
-    src
+    h_cookiecutter_pypackage
     tests/unit
     tests/integration
 
 [paths]
 source =
-    src/
-    .tox/py36-tests/lib/python3.6/site-packages/
+    src
+    */site-packages
 
 [report]
 show_missing = True

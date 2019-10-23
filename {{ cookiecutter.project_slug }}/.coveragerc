@@ -2,13 +2,13 @@
 branch = True
 parallel = True
 source =
-    src
+    {{ cookiecutter.pkg_name }}
     tests/unit
 
 [paths]
 source =
     src/
-    .tox/py36-tests/lib/python3.6/site-packages/
+    */site-packages/
 
 [report]
 show_missing = True
