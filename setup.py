@@ -32,7 +32,8 @@ setup(
     license="License :: OSI Approved :: BSD License",
     platforms=["Operating System :: OS Independent"],
     # Contents and dependencies
-    packages=find_packages(),
+    packages=find_packages(where='src'),
+    package_dir={'': 'src'},
     install_requires=INSTALL_REQUIRES,
     # Add support for pip install .[test]
     extras_require={"tests": TESTS_REQUIRE},

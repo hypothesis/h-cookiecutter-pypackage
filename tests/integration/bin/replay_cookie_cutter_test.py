@@ -61,7 +61,7 @@ class TestCookieCutter:
 
         self.assert_file_exists(tmp_path, config["project_slug"], "Makefile")
         self.assert_file_exists(
-            tmp_path, config["project_slug"], config["pkg_name"], "__init__.py"
+            tmp_path, config["project_slug"], "src", config["pkg_name"], "__init__.py"
         )
 
     def test_render_will_read_template_from_config(self, tmp_path, cookiecutter):

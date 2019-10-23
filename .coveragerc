@@ -3,6 +3,8 @@ branch = True
 parallel = True
 source =
     bin
+    src
+    tests/unit
     tests/integration
 
 [report]

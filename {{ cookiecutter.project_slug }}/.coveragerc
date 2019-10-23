@@ -2,7 +2,7 @@
 branch = True
 parallel = True
 source =
-    {{ cookiecutter.pkg_name }}
+    src
     tests/unit
 
 [report]
