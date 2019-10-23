@@ -35,6 +35,8 @@ setup(
     packages=find_packages(where='src'),
     package_dir={'': 'src'},
     install_requires=INSTALL_REQUIRES,
+    # Read the MANIFEST.in
+    include_package_data=True,
     # Add support for pip install .[test]
     extras_require={"tests": TESTS_REQUIRE},
     # Adding pytest support for `python setup.py test` (also see setup.cfg)

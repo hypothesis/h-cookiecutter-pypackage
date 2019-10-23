@@ -5,6 +5,11 @@ source =
     src
     tests/unit
 
+[paths]
+source =
+    src/
+    .tox/py36-tests/lib/python3.6/site-packages/
+
 [report]
 show_missing = True
 precision = 2
