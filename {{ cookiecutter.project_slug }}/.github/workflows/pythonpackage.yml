@@ -18,7 +18,8 @@ jobs:
     - name: Check formatting
       run: |
         pip install black
-        black --check `python setup.py  --name`
+        black --check src tests bin
+        isort --recursive --quiet --check-only .
 
     # Dependencies are checked by pylint,
     # so this is as late as we can leave this
@@ -29,7 +30,7 @@ jobs:
     - name: Lint with pylint
       run: |
         pip install pylint
-        pylint --reports=y `python setup.py  --name` bin
+        pylint --reports=y src bin
         pylint --reports=y --rcfile=tests/.pylintrc tests
 
     - name: Run unit tests
