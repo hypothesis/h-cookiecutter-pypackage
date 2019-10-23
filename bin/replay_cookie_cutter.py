@@ -89,22 +89,24 @@ class CookieCutter:
         if not skip_patterns:
             skip_patterns = []
 
-        all_files = []
         for parent_dir, _, filenames in os.walk(source_dir):
             for filename in filenames:
                 rel_path = os.path.relpath(
                     os.path.join(parent_dir, filename), source_dir
                 )
 
-                if not cls._matches_pattern(rel_path, skip_patterns):
-                    all_files.append(rel_path)
+                target = os.path.join(target_dir, rel_path)
 
-        for rel_path in all_files:
-            source = os.path.join(source_dir, rel_path)
-            target = os.path.join(target_dir, rel_path)
+                if cls._matches_pattern(rel_path, skip_patterns):
+                    if not os.path.exists(target):
+                        print("... target doesn't exist: Skipping the skip!")
+                    else:
+                        continue
 
-            mkpath(os.path.dirname(target))
-            shutil.copyfile(source, target)
+                source = os.path.join(source_dir, rel_path)
+
+                mkpath(os.path.dirname(target))
+                shutil.copyfile(source, target)
 
     @classmethod
     def render_template(cls, project_dir, config, template=None):
