@@ -7,7 +7,7 @@
         "disable_replay": [
             "README.md",
             "MANIFEST.in",
-            "setup.py",
+            "setup.cfg",
             ".coveragerc",
             "pytest.ini",
             ".github/*"

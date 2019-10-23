@@ -1,52 +1,67 @@
+import os
+
 from setuptools import find_packages, setup
+from setuptools.config import read_configuration
 
-from setup_extra import Package
 
-package = Package(name="h_cookiecutter_pypackage", version="1.0")
+class Package:
+    def __init__(self, config):
+        metadata = config['metadata']
+        options = config['options']
 
-INSTALL_REQUIRES = []
+        self.options = options
+        self.name = metadata['name']
+        self.version = metadata['version']
 
-TESTS_REQUIRE = INSTALL_REQUIRES + ["cookiecutter", "pytest", "coverage", "twine"]
+    def tests_require(self):
+        return self.options['tests_require'] + self.options['install_requires']
 
+    def read_egg_version(self):
+        pkg_info_file = self.name + ".egg-info/PKG-INFO"
+        if not os.path.isfile(pkg_info_file):
+            return None
+
+        with open(pkg_info_file) as fh:
+            for line in fh:
+                if line.startswith("Version"):
+                    return line.strip().split("Version: ")[-1]
+
+    def get_version(self, build_var="BUILD"):
+        # If we have a build argument we should honour it no matter what
+        build = os.environ.get(build_var)
+        if build:
+            return self.version + "." + build
+
+        # If not, we should try and read it from the .egg-info/ data
+
+        # We need to do this for source distributions, as setup.py is re-run when
+        # installed this way, and we would always get 'dev0' as the version
+        # Wheels and binary installs don't work this way and read from PKG-INFO
+        # for them selves
+        egg_version = self.read_egg_version()
+        if egg_version:
+            return egg_version
+
+        # Otherwise create a 'dev' build which will be counted by pip as 'later'
+        # than the major version no matter what
+        return self.version + ".dev0"
+
+
+package = Package(read_configuration('setup.cfg'))
 
 setup(
     # Metadata
     # https://docs.python.org/3/distutils/setupscript.html#additional-meta-data
-    name=package.name,
     version=package.get_version(),
-    description="",
-    long_description=package.read_string("README.md"),
-    long_description_content_type="text/markdown",
-    author="Hypothesis Engineering Team",
-    author_email="eng@list.hypothes.is",
-    maintainer="Hypothesis Engineering Team",
-    maintainer_email="eng@list.hypothes.is",
-    url="https://web.hypothes.is/",
-    project_urls={"Source": "https://github.com/hypothesis/h-cookiecutter-pypackage"},
-    # From: https://pypi.org/pypi?:action=list_classifiers
-    classifiers=[
-        # Maybe if we want to put people off less we can change this
-        "Development Status :: 2 - Pre-Alpha",
-        "Programming Language :: Python :: 3.6",
-    ],
-    license="License :: OSI Approved :: BSD License",
-    platforms=["Operating System :: OS Independent"],
+
     # Contents and dependencies
     packages=find_packages(where='src'),
     package_dir={'': 'src'},
-    install_requires=INSTALL_REQUIRES,
     # Read the MANIFEST.in
     include_package_data=True,
-    # Add support for pip install .[test]
-    extras_require={"tests": TESTS_REQUIRE},
-    # Adding pytest support for `python setup.py test` (also see setup.cfg)
-    test_suite="tests",
-    setup_requires=[
-        "pytest-runner",
-        # Try and prevent long-description bug when uploading to PyPI
-        "setuptools>=38.6.0",
-        "wheel>=0.31.0",
-        "twine>=1.11.0",
-    ],
-    tests_require=TESTS_REQUIRE,
+
+    # Add support for pip install .[tests]
+    extras_require={"tests": package.tests_require()},
+
+    tests_require=package.tests_require(),
 )
