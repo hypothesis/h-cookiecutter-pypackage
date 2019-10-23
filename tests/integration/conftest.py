@@ -7,7 +7,6 @@ import os
 import pytest
 
 from bin.replay_cookie_cutter import CookieCutter
-from tests.patch import patch  # pylint: disable=unused-import
 
 
 @pytest.fixture

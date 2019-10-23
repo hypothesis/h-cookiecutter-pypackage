@@ -52,9 +52,9 @@ class TestCookieCutter:
 
         assert template == config["_template"]
 
-    def test_it_can_render_template(self, tmp_path, config):
+    def test_it_can_render_template(self, tmp_path, config, template):
         package_name = CookieCutter.render_template(
-            project_dir=tmp_path, config=config, template=self._get_project_root()
+            project_dir=tmp_path, config=config, template=template
         )
 
         assert package_name == config["project_slug"]
@@ -127,20 +127,6 @@ class TestCookieCutter:
         cookiecutter.side_effect = os.mkdir(os.path.join(tmp_path, "example_project"))
         return cookiecutter
 
-    @pytest.fixture
-    def existing_project(self, tmp_path, config):
-        project_name = CookieCutter.render_template(project_dir=tmp_path, config=config)
-
-        return os.path.join(tmp_path, project_name)
-
-    @pytest.fixture
-    def config(self):
-        return {
-            "project_slug": "h-test-lib",
-            "pkg_name": "h_test_lib",
-            "_template": self._get_project_root(),
-        }
-
     def write_string(self, directory, filename, content):
         filename = os.path.join(directory, filename)
         with open(filename, "w") as handle:
@@ -156,10 +142,3 @@ class TestCookieCutter:
 
     def assert_file_exists(self, parent_dir, *parts):
         assert os.path.isfile(os.path.join(parent_dir, *parts))
-
-    @classmethod
-    def _get_project_root(cls):
-        this_file = os.path.realpath(__file__)
-        root = os.path.abspath(os.path.join(os.path.dirname(this_file), "../../../"))
-
-        return root
