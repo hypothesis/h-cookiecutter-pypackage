@@ -6,7 +6,7 @@ package = Package(name="h_cookiecutter_pypackage", version="1.0")
 
 INSTALL_REQUIRES = []
 
-TESTS_REQUIRE = INSTALL_REQUIRES + ["cookiecutter", "pytest", "coverage"]
+TESTS_REQUIRE = INSTALL_REQUIRES + ["cookiecutter", "pytest", "coverage", "twine"]
 
 
 setup(
