@@ -29,6 +29,7 @@ jobs:
 
     - name: Lint with pylint
       run: |
+        python -c "import h_cookiecutter_pypackage;print(h_cookiecutter_pypackage.__file__)"
         pip install pylint
         pylint --reports=y src bin
         pylint --reports=y --rcfile=tests/.pylintrc tests
