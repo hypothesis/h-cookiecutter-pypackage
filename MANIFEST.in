@@ -1,3 +1,5 @@
 # Make sure source distributions have the license
 include LICENSE
 include setup_extra.py
+
+include src/h_cookiecutter_pypackage/data_present.txt

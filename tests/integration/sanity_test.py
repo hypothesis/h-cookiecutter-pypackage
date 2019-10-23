@@ -28,6 +28,7 @@ class TestSanity:
             "dist",
             "__pycache__",
             "h_cookiecutter_pypackage.egg-info",
+            ".coverage",
             # Expected resources that shouldn't be there
             ".cookiecutter.json",
             "cookiecutter.json",

@@ -6,6 +6,7 @@
     "options": {
         "disable_replay": [
             "README.md",
+            "MANIFEST.in",
             "setup.py",
             ".coveragerc",
             "pytest.ini",

@@ -50,7 +50,7 @@ template: python
 clean:
 	@find . -type f -name "*.py[co]" -delete
 	@find . -type d -name "__pycache__" -delete
-	@rm -rf build .eggs dist *.egg-info .coverage.* .coverage
+	@rm -rf build .eggs dist src/*.egg-info .coverage.* .coverage .pytest_cache
 
 .PHONY: python
 python:
