@@ -13,4 +13,5 @@ def get_dummy():
 
 
 def data_exists(filename):
+    """Check whether local package files exist, for testing purposes"""
     return os.path.exists(resource_filename("h_cookiecutter_pypackage", filename))
