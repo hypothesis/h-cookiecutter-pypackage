@@ -36,7 +36,7 @@ jobs:
       continue-on-error: true
       run: |
         pip install pytest pytest-html coverage
-        coverage run -m pytest --html=unit_test_report.html --self-contained-html
+        coverage run -m pytest --html=unit_test_report.html --self-contained-html tests
         touch unit_tests_passed
 
     - name: Archive unit test report
