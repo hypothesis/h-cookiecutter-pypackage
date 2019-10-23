@@ -26,6 +26,7 @@ class TestSanity:
             ".pytest_cache",
             ".eggs",
             "dist",
+            "build",
             "__pycache__",
             "h_cookiecutter_pypackage.egg-info",
             ".coverage",
