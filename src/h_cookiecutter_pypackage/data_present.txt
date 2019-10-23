@@ -1,0 +1,1 @@
+This should be added when packaged as it is mentioned in MANIFEST.in
