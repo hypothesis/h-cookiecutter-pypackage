@@ -14,6 +14,8 @@ disable=bad-continuation,
         missing-function-docstring,
         missing-module-docstring,
         missing-class-docstring,
+        missing-type-doc,
+        missing-return-type-doc,
         no-self-use,
         redefined-outer-name,
 

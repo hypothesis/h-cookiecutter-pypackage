@@ -10,6 +10,8 @@ load-plugins=pylint.extensions.bad_builtin,
 
 [MESSAGES CONTROL]
 disable=bad-continuation,
+        missing-type-doc,
+        missing-return-type-doc,
 
 [REPORTS]
 output-format=colorized

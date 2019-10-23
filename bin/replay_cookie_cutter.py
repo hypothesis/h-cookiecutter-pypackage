@@ -29,16 +29,12 @@ class CookieCutter:
         will be used to decide which template to replay if none is provided.
 
         :param project_dir: The target directory
-        :type project_dir: str
 
         :param config: The config to apply
-        :type config: dict
 
         :param template: The template to apply
-        :type template: str
 
         :return: The name of the project created
-        :rtype: str
 
         :raise ValueError: If cookiecutter replaying would change the
             name of the project (the name of the project created by replaying
@@ -117,16 +113,12 @@ class CookieCutter:
         will be used to decide which template to replay if none is provided.
 
         :param project_dir: The target directory
-        :type project_dir: str
 
         :param config: The config to apply
-        :type config: dict
 
         :param template: The template to apply
-        :type template: str
 
         :return: The name of the project created
-        :rtype: str
         """
         if template is None:
             template = cls.get_template_from_config(config)
