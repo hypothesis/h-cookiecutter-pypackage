@@ -17,8 +17,18 @@ class Package:
         return self.options['tests_require'] + self.options['install_requires']
 
     def read_egg_version(self):
-        pkg_info_file = self.name + ".egg-info/PKG-INFO"
-        if not os.path.isfile(pkg_info_file):
+        pkg_info_file = None
+        # PKG-INFO can be in different places depending on whether we are a
+        # source distribution or a checked out copy etc.
+        for location in [
+                'PKG-INFO',
+                'src/' + self.name + ".egg-info/PKG-INFO",
+                self.name + ".egg-info/PKG-INFO",
+            ]:
+            if os.path.isfile(location):
+                pkg_info_file = location
+
+        if not pkg_info_file:
             return None
 
         with open(pkg_info_file) as fh:
