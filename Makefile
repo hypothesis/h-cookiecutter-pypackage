@@ -14,7 +14,6 @@ help:
 	@echo "make template          Replay the cookiecutter project template over this"
 	@echo "                       project. Warning! This can destroy changes."
 
-
 .PHONY: lint
 lint: python
 	@tox -qe py36-lint
