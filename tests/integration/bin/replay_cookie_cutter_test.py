@@ -105,7 +105,7 @@ class TestCookieCutter:
         # ... and add some custom nonsense in that file
         makefile = self.write_string(project_dir, "Makefile", "Nonsense")
         # ... and remove a file
-        setup_cfg = os.path.join(project_dir, 'setup.cfg')
+        setup_cfg = os.path.join(project_dir, "setup.cfg")
         os.unlink(setup_cfg)
 
         # Then when we replay the project
