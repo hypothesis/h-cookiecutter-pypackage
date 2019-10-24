@@ -1,64 +1,74 @@
-{{ cookiecutter.project_name }}
-===============================
+# {{ cookiecutter.project_name }}
 
 {{ cookiecutter.description }}
-
-Features
---------
-
-TBC
 
 Usage
 -----
 
-```python
-# Usage example
+TODO: Use this section to explain how someone would use your package in their project.
+For example: how to add the package to a project as a requirement, how to configure the
+package, how to initialize the package, and how to call it.
+
+Hacking
+-------
+
+### Installing {{ cookiecutter.project_slug }} in a development environment
+
+#### You will need
+
+* [Git](https://git-scm.com/)
+
+* [pyenv](https://github.com/pyenv/pyenv)
+  Follow the instructions in the pyenv README to install it.
+  The Homebrew method works best on macOS.
+  On Ubuntu follow the Basic GitHub Checkout method.
+
+#### Clone the git repo
+
+```terminal
+git clone https://github.com/hypothesis/{{ cookiecutter.project_slug }}.git
 ```
 
-Building
---------
+This will download the code into a `{{ cookiecutter.project_slug }}` directory
+in your current working directory. You need to be in the
+`{{ cookiecutter.project_slug }}` directory for the rest of the installation
+process:
 
-Many commands are available via the Makefile. The basic commands available are:
+```terminal
+cd {{ cookiecutter.project_slug }}
+```
 
- * `make test` - Run the test suite
- * `make coverage` - Run after running tests to see the coverage
- * `make lint` - Get linter feedback
- * `make format` - Format the project according to Hypothesis standards
- * `make package` - Test packaging locally
+#### Run the tests
 
-For details of other available actions run:
+```terminal
+make test
+```
 
-    make help
+**That's it!** You’ve finished setting up your {{ cookiecutter.project_slug }}
+development environment. Run `make help` to see all the commands that're
+available for linting, code formatting, packaging, etc.
 
-Installing
-----------
+### Updating the Cookiecutter scaffolding
 
-Once built, this package can be downloaded directly from PyPi with:
+This project was created from the
+https://github.com/hypothesis/h-cookiecutter-pypackage/ template.
+If h-cookiecutter-pypackage itself has changed since this project was created, and
+you want to update this project with the latest changes, you can "replay" the
+cookiecutter over this project. Run:
 
-    pip install {{ cookiecutter.project_slug }}
-    
-You can also install it locally with:
+```terminal
+make template
+```
 
-    pip install .
-    
-You can install a dynamic link to this code for development (so that as the
-code changes, your installed code does too) with:
+**This will change the files in your working tree**, applying the latest
+updates from the h-cookiecutter-pypackage template. Inspect and test the
+changes, do any fixups that are needed, and then commit them to git and send a
+pull request.
 
-    pip install --editable .
-    
-Updating boilerplate
---------------------
+If you want `make template` to skip certain files, never changing them, add
+these files to `"options.disable_replay"` in
+[`.cookiecutter.json`](.cookiecutter.json) and commit that to git.
 
-The config and other boilerplate files in this project can be updated by running:
-
-    make template
-
-This will read the `.cookiecutter.json` file and replay the templated files, 
-overwriting local changes.
-
-If you would like a particular file to be preserved you can add it
-to: `"options.disable_replay"` in the `.cookiecutter.json` file. You can also
-just not commit the changes made if you don't like them.
-
-If you would like to update a file that is mentioned in `disable_replay`,
-just delete it and it will be replaced when running `make template`.
+If you want `make template` to update a file that's listed in `disable_replay`
+simply delete that file and then run `make template`, it'll recreate the file
+for you.
