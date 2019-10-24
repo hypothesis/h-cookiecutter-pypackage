@@ -115,6 +115,16 @@ class TestCookieCutter:
         self.assert_file_contains(makefile, "Nonsense")
         self.assert_file_exists(setup_cfg)
 
+    def test_replay_preserves_executable_premissions(self, existing_project, config):
+        executable_file = os.path.join(existing_project, "bin/install-python.sh")
+        # Delete the file first, or we somehow keep permissions
+        os.unlink(executable_file)
+
+        CookieCutter.replay(project_dir=existing_project, config=config)
+
+        assert os.path.isfile(executable_file)
+        assert os.access(executable_file, os.X_OK)
+
     def test_if_fails_when_template_does_not_match_project(
         self, tmp_path, existing_project, config
     ):
