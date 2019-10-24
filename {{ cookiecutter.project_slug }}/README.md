@@ -59,3 +59,6 @@ overwriting local changes.
 If you would like a particular file to be preserved you can add it
 to: `"options.disable_replay"` in the `.cookiecutter.json` file. You can also
 just not commit the changes made if you don't like them.
+
+If you would like to update a file that is mentioned in `disable_replay`,
+just delete it and it will be replaced when running `make template`.

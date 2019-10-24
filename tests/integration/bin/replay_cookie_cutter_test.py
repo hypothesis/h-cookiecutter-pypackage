@@ -96,7 +96,7 @@ class TestCookieCutter:
 
     def test_it_can_replay_ignoring_files(self, tmp_path, config):
         # If we disable replay on a file
-        config["options"] = {"disable_replay": ["Makef*"]}
+        config["options"] = {"disable_replay": ["Makef*", "setup.cfg"]}
 
         # ... and render out the project
         package_name = CookieCutter.render_template(project_dir=tmp_path, config=config)
@@ -104,12 +104,16 @@ class TestCookieCutter:
 
         # ... and add some custom nonsense in that file
         makefile = self.write_string(project_dir, "Makefile", "Nonsense")
+        # ... and remove a file
+        setup_cfg = os.path.join(project_dir, "setup.cfg")
+        os.unlink(setup_cfg)
 
         # Then when we replay the project
         CookieCutter.replay(project_dir=project_dir, config=config)
 
         # The nonsense is still in the file
         self.assert_file_contains(makefile, "Nonsense")
+        self.assert_file_exists(setup_cfg)
 
     def test_if_fails_when_template_does_not_match_project(
         self, tmp_path, existing_project, config
