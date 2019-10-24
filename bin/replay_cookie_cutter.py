@@ -98,10 +98,10 @@ class CookieCutter:
                 target = os.path.join(target_dir, rel_path)
 
                 if cls._matches_pattern(rel_path, skip_patterns):
-                    if not os.path.exists(target):
-                        print("... target doesn't exist: Skipping the skip!")
-                    else:
+                    if os.path.exists(target):
                         continue
+
+                    print("... target doesn't exist: Skipping the skip!")
 
                 source = os.path.join(source_dir, rel_path)
 
