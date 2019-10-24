@@ -7,7 +7,7 @@
     "options": {
         "disable_replay": [
             "README.md",
-            "setup.py"
+            "setup.cfg"
         ]
     }
 }
