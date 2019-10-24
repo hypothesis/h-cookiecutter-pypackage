@@ -106,7 +106,7 @@ class CookieCutter:
                 source = os.path.join(source_dir, rel_path)
 
                 mkpath(os.path.dirname(target))
-                shutil.copyfile(source, target)
+                shutil.copy(source, target)
 
     @classmethod
     def render_template(cls, project_dir, config, template=None):
