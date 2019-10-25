@@ -22,6 +22,42 @@ To create a new project from this template:
 $ cookiecutter gh:hypothesis/h-cookiecutter-pypackage
 ```
 
+Publishing to PyPI
+------------------
+
+By default when your package passes all tests, coverage, format and linting
+requirements, it will be built and uploaded to [https://pypi.org/](https://pypi.org/).
+
+In order for this to work you will need to setup and API key for the project.
+
+### Build a package and upload it to PyPI
+
+* Run: `make dist BUILD=0.0`
+* Run: `tox -e publish --run-command twine upload -u eng@list.hypothes.is -p <PASSWORD_HERE> dist/*`
+  
+###  Create an API key in PyPI  
+
+* Login to [https://pypi.org/](https://pypi.org/)
+* Goto "Your projects" and select "Manage" on the correct project
+  * "Settings" > "Create a token for <project-name-here>"
+  * Use the project name as the name
+  * Set the scope to the same project
+  * __COPY THE KEY NOW!__ - You __won't__ get another opportunity
+* Add the key to Passpack
+
+You may want to add some other personal accounts as owners so that we do not
+have a single account as maintainer.
+
+### Add the key to Github as a secret
+
+* Goto [https://github.com/](https://github.com/) and find the correct project
+* Goto "Settings" > "Secrets" > "Add a new secret"
+* Use "`PYPI_TOKEN`" as the name
+* Paste the API key in as the value
+* Press "Add secret"
+
+Your next successful commit in `master` should now publish to PyPI. 
+
 Hacking
 -------
 
