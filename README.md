@@ -54,7 +54,7 @@ have a single account as maintainer.
 * Go to <kbd>Settings</kbd> > <kbd>Secrets</kbd> > <kbd>Add a new secret</kbd>
 * Use "`PYPI_TOKEN`" as the name
 * Paste the API key in as the value
-* Press "Add secret"
+* Press <kbd>Add secret</kbd>
 
 Your next successful commit in `master` should now publish to PyPI. 
 
