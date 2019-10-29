@@ -6,8 +6,7 @@ from pkg_resources import resource_filename
 
 
 def get_dummy():
-    """
-    Return "dummy".
+    """Return "dummy".
 
     This is just a dummy function to call to check.
     """
