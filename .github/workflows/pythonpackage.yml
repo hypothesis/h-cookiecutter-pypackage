@@ -29,7 +29,8 @@ jobs:
 
     - name: Lint with pylint
       run: |
-        pip install pylint
+        pip install pylint pydocstyle
+        pydocstyle --explain src tests
         pylint --reports=y src bin
         pylint --reports=y --rcfile=tests/.pylintrc tests
 
