@@ -25,8 +25,8 @@ $ cookiecutter gh:hypothesis/h-cookiecutter-pypackage
 Publishing to PyPI
 ------------------
 
-By default when your package passes all tests, coverage, format and linting
-requirements, it will be built and uploaded to [https://pypi.org/](https://pypi.org/).
+When you merge a pull request into master, if the package passes all tests, coverage, format and linting
+requirements, GitHub Actions will automatically build it and uploaded it to [https://pypi.org/](https://pypi.org/).
 
 For this to work you'll need to setup an API key for the project.
 
@@ -43,7 +43,6 @@ For this to work you'll need to setup an API key for the project.
   * Use the project name as the name
   * Set the scope to the same project
   * __COPY THE KEY NOW!__ - You __won't__ get another opportunity
-* Add the key to Passpack
 
 You may want to add some other personal accounts as owners so that we do not
 have a single account as maintainer.
