@@ -51,7 +51,7 @@ have a single account as maintainer.
 ### Add the key to Github as a secret
 
 * Goto [https://github.com/](https://github.com/) and find the correct project
-* Goto "Settings" > "Secrets" > "Add a new secret"
+* Go to <kbd>Settings</kbd> > <kbd>Secrets</kbd> > <kbd>Add a new secret</kbd>
 * Use "`PYPI_TOKEN`" as the name
 * Paste the API key in as the value
 * Press "Add secret"
