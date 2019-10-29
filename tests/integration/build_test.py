@@ -4,19 +4,18 @@ import subprocess
 
 class TestBuildFunctions:
     def run_command(self, command, cwd, env=None):
+        kwargs = {"cwd": cwd}
+        if env:
+            copy_env = os.environ.copy()
+            copy_env.update(env)
+            kwargs["env"] = copy_env
+
         try:
-            kwargs = {"cwd": cwd}
-            if env:
-                copy_env = os.environ.copy()
-                copy_env.update(env)
-                kwargs["env"] = copy_env
-
             results = subprocess.check_output(command, **kwargs)
-
-            return True, results
-
         except subprocess.CalledProcessError as e:  # pragma: no cover
             return False, e.output
+
+        return True, results
 
     def assert_run_command_ok(self, command, cwd, env=None):
         ok, results = self.run_command(command, cwd, env)
