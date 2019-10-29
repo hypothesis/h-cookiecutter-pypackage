@@ -114,7 +114,7 @@ class TestCookieCutter:
         self.assert_file_contains(makefile, "Nonsense")
         self.assert_file_exists(setup_cfg)
 
-    def test_replay_preserves_executable_premissions(self, existing_project, config):
+    def test_replay_preserves_executable_permissions(self, existing_project, config):
         executable_file = os.path.join(existing_project, "bin/install-python.sh")
         # Delete the file first, or we somehow keep permissions
         os.unlink(executable_file)
