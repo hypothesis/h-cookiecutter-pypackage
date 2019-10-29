@@ -33,7 +33,7 @@ For this to work you'll need to setup an API key for the project.
 ### Build a package and upload it to PyPI
 
 * Run: `make dist BUILD=0.0`
-* Run: `tox -e publish --run-command twine upload -u eng@list.hypothes.is -p <PASSWORD_HERE> dist/*`
+* Run: `tox -e publish --run-command "twine upload -u eng@list.hypothes.is -p <PASSWORD_HERE> dist/*"`
   
 ### Create an API key in PyPI  
 
