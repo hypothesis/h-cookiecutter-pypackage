@@ -35,7 +35,7 @@ In order for this to work you will need to setup and API key for the project.
 * Run: `make dist BUILD=0.0`
 * Run: `tox -e publish --run-command twine upload -u eng@list.hypothes.is -p <PASSWORD_HERE> dist/*`
   
-###  Create an API key in PyPI  
+### Create an API key in PyPI  
 
 * Login to [https://pypi.org/](https://pypi.org/)
 * Goto "Your projects" and select "Manage" on the correct project
