@@ -1,6 +1,4 @@
-"""
-A dummy package to test that we can import this during unit tests
-"""
+"""A dummy package to test that we can import this during unit tests."""
 
 import os
 

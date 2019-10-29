@@ -2,9 +2,10 @@ import os
 
 
 class TestSanity:
-    """
-    Some basic 'the world isn't falling down' tests. These do not ensure
-    anything is fine, but if any of these break you definitely have trouble.
+    """Some basic 'the world isn't falling down' tests.
+
+    These do not ensure anything is fine, but if any of these break you
+    definitely have trouble.
     """
 
     def test_all_files_in_root_accounted_for(self, template):
