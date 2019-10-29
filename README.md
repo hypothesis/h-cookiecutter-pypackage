@@ -28,7 +28,7 @@ Publishing to PyPI
 By default when your package passes all tests, coverage, format and linting
 requirements, it will be built and uploaded to [https://pypi.org/](https://pypi.org/).
 
-In order for this to work you will need to setup and API key for the project.
+For this to work you'll need to setup an API key for the project.
 
 ### Build a package and upload it to PyPI
 
