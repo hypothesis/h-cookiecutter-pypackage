@@ -17,7 +17,6 @@ class TestBuildFunctions:
 
         return True, results
 
-
     def assert_run_command_ok(self, command, cwd, env=None):
         ok, results = self.run_command(command, cwd, env)
         assert ok
