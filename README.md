@@ -38,7 +38,7 @@ For this to work you'll need to setup an API key for the project.
 ### Create an API key in PyPI  
 
 * Login to [https://pypi.org/](https://pypi.org/)
-* Goto "Your projects" and select "Manage" on the correct project
+* Go to <kbd>Your projects</kbd> and select <kbd>Manage</kbd> on the correct project
   * "Settings" > "Create a token for <project-name-here>"
   * Use the project name as the name
   * Set the scope to the same project
