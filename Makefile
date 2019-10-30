@@ -6,6 +6,7 @@ help:
 	@echo "make checkformatting   Crash if the code isn't correctly formatted"
 
 	@echo "make dist              Create package in the dist/ directory"
+	@echo "make release           Tag a release and trigger deployment to PyPI"
 	@echo "make publish           Publish packages created in the dist/ directory"
 	@echo "make test              Run the unit tests"
 	@echo "make coverage          Print the unit test coverage report"
@@ -29,6 +30,10 @@ checkformatting: python
 .PHONY: dist
 dist: python
 	@BUILD=$(BUILD) tox -qe package
+
+.PHONY: release
+release: python
+	@tox -qe release
 
 .PHONY: publish
 publish: python

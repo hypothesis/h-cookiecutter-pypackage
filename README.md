@@ -25,6 +25,14 @@ $ cookiecutter gh:hypothesis/h-cookiecutter-pypackage
 Publishing to PyPI
 ------------------
 
+Once your package is up and running the following behaviour is in place:
+
+ * All pushes will be run through the full set of tests and linting
+ * Only successful tagged builds will be published to PyPI
+    * To do this run `make release`
+
+### The first time
+
 When you merge a pull request into master, if the package passes all tests, coverage, format and linting
 requirements, GitHub Actions will automatically build it and uploaded it to [https://pypi.org/](https://pypi.org/).
 
@@ -32,7 +40,8 @@ For this to work you'll need to setup an API key for the project.
 
 ### Build a package and upload it to PyPI
 
-* Run: `make dist BUILD=0.0`
+* Run: `make publish`
+* Type in a release message for the intial release
 * Run: `tox -e publish --run-command "twine upload -u eng@list.hypothes.is -p <PASSWORD_HERE> dist/*"`
   
 ### Create an API key in PyPI  
@@ -54,8 +63,6 @@ have a single account as maintainer.
 * Use "`PYPI_TOKEN`" as the name
 * Paste the API key in as the value
 * Press <kbd>Add secret</kbd>
-
-Your next successful commit in `master` should now publish to PyPI. 
 
 Hacking
 -------
