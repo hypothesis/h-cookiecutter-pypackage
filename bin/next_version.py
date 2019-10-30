@@ -51,5 +51,5 @@ class VersionSuggester:
         return f"v{major_minor}.{build}"
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     print(VersionSuggester.suggest_tag())

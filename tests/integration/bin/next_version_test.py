@@ -7,11 +7,13 @@ from packaging import version
 
 
 class TestVersionSuggester:
-    def test_it_fails_without_setup_cfg(self, tmp_path):
+    def test_it_fails_without_setup_cfg(
+        self, empty_dir
+    ):  # pylint: disable=unused-argument
         with pytest.raises(FileNotFoundError):
             VersionSuggester.major_minor_version()
 
-    def test_it_can_read_setup_cfg(self, project_dir):
+    def test_it_can_read_setup_cfg(self, VersionSuggester):
         assert VersionSuggester.major_minor_version() == version.parse("1.3")
 
     def test_it_can_read_git_tag(self, check_output):
@@ -24,22 +26,22 @@ class TestVersionSuggester:
 
         assert VersionSuggester.last_tag() is None
 
-    def test_it_suggests_zero_with_no_tag(self, project_dir, VersionSuggester):
+    def test_it_suggests_zero_with_no_tag(self, VersionSuggester):
         VersionSuggester.last_tag.return_value = None
 
         assert VersionSuggester.suggest_tag() == "v1.3.0"
 
-    def test_it_increments_a_matching_tag(self, project_dir, VersionSuggester):
+    def test_it_increments_a_matching_tag(self, VersionSuggester):
         VersionSuggester.last_tag.return_value = version.parse("1.3.4")
 
         assert VersionSuggester.suggest_tag() == "v1.3.5"
 
-    def test_it_jumps_if_tag_is_old(self, project_dir, VersionSuggester):
+    def test_it_jumps_if_tag_is_old(self, VersionSuggester):
         VersionSuggester.last_tag.return_value = version.parse("1.2.4")
 
         assert VersionSuggester.suggest_tag() == "v1.3.0"
 
-    def test_it_crashes_if_tag_is_newer(self, project_dir, VersionSuggester):
+    def test_it_crashes_if_tag_is_newer(self, VersionSuggester):
         VersionSuggester.last_tag.return_value = version.parse("1.5.4")
 
         with pytest.raises(ValueError):
@@ -50,20 +52,22 @@ class TestVersionSuggester:
         return patch("bin.next_version.check_output")
 
     @pytest.fixture()
-    def VersionSuggester(self, patch):
+    def VersionSuggester(self, empty_dir):
+        empty_dir.join("setup.cfg").write("[metadata]\nversion = 1.3\n")
+
         class TestableSuggester(VersionSuggester):
             last_tag = create_autospec(VersionSuggester.last_tag)
 
         return TestableSuggester
 
     @pytest.fixture
-    def project_dir(self, tmpdir):
+    def empty_dir(self, tmpdir):
         current_dir = os.getcwd()
 
         try:
-            tmpdir.join("setup.cfg").write("[metadata]\nversion = 1.3\n")
-
             os.chdir(tmpdir)
             yield tmpdir
         finally:
             os.chdir(current_dir)
+
+        return tmpdir
