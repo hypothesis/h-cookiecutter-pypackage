@@ -16,23 +16,23 @@ help:
 
 .PHONY: lint
 lint: python
-	@tox -qe py36-lint
+	@tox -qe lint
 
 .PHONY: format
 format: python
-	@tox -qe py36-format
+	@tox -qe format
 
 .PHONY: checkformatting
 checkformatting: python
-	@tox -qe py36-checkformatting
+	@tox -qe checkformatting
 
 .PHONY: dist
 dist: python
-	@BUILD=$(BUILD) tox -qe py36-package
+	@BUILD=$(BUILD) tox -qe package
 
 .PHONY: publish
 publish: python
-	@tox -qe py36-publish
+	@tox -qe publish
 
 .PHONY: test
 test: python
@@ -40,11 +40,11 @@ test: python
 
 .PHONY: coverage
 coverage: python
-	@tox -qe py36-coverage
+	@tox -qe coverage
 
 .PHONY: template
 template: python
-	@tox -qe py36-replay-cookiecutter
+	@tox -qe replay-cookiecutter
 
 .PHONY: clean
 clean:
