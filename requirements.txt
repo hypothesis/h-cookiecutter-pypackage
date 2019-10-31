@@ -1,1 +1,2 @@
--e .
+# Put your install dependencies here for dependabot
+flask

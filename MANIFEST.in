@@ -1,4 +1,4 @@
 # Make sure source distributions have the license
 include LICENSE
-
+include requirements.txt
 include src/h_cookiecutter_pypackage/data_present.txt
