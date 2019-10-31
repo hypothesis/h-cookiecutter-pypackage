@@ -42,9 +42,9 @@ re-release:
 	@[ -z "$(VERSION)" ] && { echo "No VERSION specified"; exit 1; } || echo "This will delete and remake the tag '$(VERSION)'"
 	@read -p "(Enter to continue, Ctrl-C to quit)" dummy
 	@git tag --delete $(VERSION)
-	@git push --delete origin $(VERSION)
 	@git tag -a $(VERSION)
-	@git push --follow-tags
+	@git push --delete origin $(VERSION)
+	@git push origin $(VERSION) --follow-tags
 
 .PHONY: publish
 publish: python
