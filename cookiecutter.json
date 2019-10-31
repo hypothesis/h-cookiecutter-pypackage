@@ -8,6 +8,7 @@
         "disable_replay": [
             "README.md",
             "setup.cfg",
+            "requirements.*",
             "src/{{ cookiecutter.pkg_name }}/__init__.py"
         ]
     }

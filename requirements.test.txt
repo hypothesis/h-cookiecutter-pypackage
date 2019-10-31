@@ -1,0 +1,6 @@
+# Put your test dependencies here for dependabot
+
+cookiecutter
+twine
+pytest
+coverage
