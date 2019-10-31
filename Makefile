@@ -4,9 +4,11 @@ help:
 	@echo "make lint              Code quality analysis (pylint)"
 	@echo "make format            Correctly format the code"
 	@echo "make checkformatting   Crash if the code isn't correctly formatted"
-
 	@echo "make dist              Create package in the dist/ directory"
 	@echo "make release           Tag a release and trigger deployment to PyPI"
+	@echo "make re-release        Re-release a tag by specifying VERSION=v.1.x.x etc."
+	@echo "                       This will not overwrite a package in PyPI but can be"
+	@echo "                       useful if the release did not pass CI the first time."
 	@echo "make publish           Publish packages created in the dist/ directory"
 	@echo "make test              Run the unit tests"
 	@echo "make coverage          Print the unit test coverage report"
@@ -34,6 +36,15 @@ dist: python
 .PHONY: release
 release: python
 	@tox -qe release
+
+.PHONY: re-release
+re-release:
+	@[ -z "$(VERSION)" ] && { echo "No VERSION specified"; exit 1; } || echo "This will delete and remake the tag '$(VERSION)'"
+	@read -p "(Enter to continue, Ctrl-C to quit)" dummy
+	@git tag --delete $(VERSION)
+	@git push --delete origin $(VERSION)
+	@git tag -a $(VERSION)
+	@git push --follow-tags
 
 .PHONY: publish
 publish: python
