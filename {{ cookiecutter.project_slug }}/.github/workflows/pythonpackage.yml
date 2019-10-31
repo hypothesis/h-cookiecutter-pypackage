@@ -83,7 +83,7 @@ jobs:
     - name: Package
       run: |
         pip install twine wheel
-        BUILD=`date +%Y%m%d.%H%M%S` python setup.py bdist_wheel sdist
+        BUILD=${% raw %}{{ github.ref }}{% endraw %} python setup.py bdist_wheel sdist
         twine check dist/*
 
     - name: Archive packages
@@ -96,7 +96,7 @@ jobs:
     name: Publish
     needs: package
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
+    if: startsWith(github.ref, 'refs/tags/v')
 
     steps:
     - name: Download built packages
