@@ -29,12 +29,12 @@ class TestBuildFunctions:
         results = self.assert_run_command_ok(
             ["python", "setup.py", "sdist"],
             cwd=existing_project,
-            env={"BUILD": "1234.5678"},
+            env={"BUILD": "v1.0.5678"},
         )
 
         # This is the last step in the build
-        assert "removing 'h_test_lib-1.0.1234.5678'" in results.decode("utf-8")
-        expected_artifact = "h_test_lib-1.0.1234.5678.tar.gz"
+        assert "removing 'h_test_lib-1.0.5678'" in results.decode("utf-8")
+        expected_artifact = "h_test_lib-1.0.5678.tar.gz"
 
         assert expected_artifact in os.listdir(os.path.join(existing_project, "dist"))
 
