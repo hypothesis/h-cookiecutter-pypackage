@@ -14,14 +14,12 @@ class Package:
         self.version = metadata["version"]
 
     def tests_require(self):
-        requirements = self.options.get("tests_require", []) + self.install_requires()
+        requirements = self.install_requires()
         requirements.extend(self.read_requirements_file("requirements.test.txt"))
         return requirements
 
     def install_requires(self):
-        requirements = self.options.get("install_requires", [])
-        requirements.extend(self.read_requirements_file("requirements.txt"))
-        return requirements
+        return list(self.read_requirements_file("requirements.txt"))
 
     def read_requirements_file(self, filename):
         with open(filename) as handle:
