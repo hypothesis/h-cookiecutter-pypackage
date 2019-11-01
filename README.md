@@ -40,7 +40,7 @@ For this to work you'll need to setup an API key for the project.
 
 ### Build a package and upload it to PyPI
 
-* Run: `make publish`
+* Run: `make release`
 * Type in a release message for the intial release
 * Run: `tox -e publish --run-command "twine upload -u eng@list.hypothes.is -p <PASSWORD_HERE> dist/*"`
   
