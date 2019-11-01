@@ -4,12 +4,9 @@ help:
 	@echo "make lint              Code quality analysis (pylint)"
 	@echo "make format            Correctly format the code"
 	@echo "make checkformatting   Crash if the code isn't correctly formatted"
-	@echo "make dist              Create package in the dist/ directory"
+	@echo "make dist              Create package in the dist/ directory for local testing"
 	@echo "make release           Tag a release and trigger deployment to PyPI"
-	@echo "make re-release        Re-release a tag by specifying VERSION=v.1.x.x etc."
-	@echo "                       This will not overwrite a package in PyPI but can be"
-	@echo "                       useful if the release did not pass CI the first time."
-	@echo "make publish           Publish packages created in the dist/ directory"
+	@echo "make initialrelease    Create the first release of a package"
 	@echo "make test              Run the unit tests"
 	@echo "make coverage          Print the unit test coverage report"
 	@echo "make clean             Delete development artefacts (cached files, "
@@ -31,24 +28,15 @@ checkformatting: python
 
 .PHONY: dist
 dist: python
-	@BUILD=$(BUILD) tox -qe package
+	@BUILD=$(BUILD) tox -qe dist
 
 .PHONY: release
 release: python
 	@tox -qe release
 
-.PHONY: re-release
-re-release:
-	@[ -z "$(VERSION)" ] && { echo "No VERSION specified"; exit 1; } || echo "This will delete and remake the tag '$(VERSION)'"
-	@read -p "(Enter to continue, Ctrl-C to quit)" dummy
-	@git tag --delete $(VERSION)
-	@git tag -a $(VERSION)
-	@git push --delete origin $(VERSION)
-	@git push origin $(VERSION) --follow-tags
-
-.PHONY: publish
-publish: python
-	@tox -qe publish
+.PHONY: initialrelease
+initialrelease: python
+	@tox -qe initialrelease
 
 .PHONY: test
 test: python

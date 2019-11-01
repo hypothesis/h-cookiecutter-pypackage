@@ -31,6 +31,13 @@ Once your package is up and running the following behaviour is in place:
  * Only successful tagged builds will be published to PyPI
     * To do this run `make release`
 
+### I ran `make release` but it went wrong!
+
+If a release fails to build then just run the command again.
+
+This will skip a version number, but that's ok. If you want to you can
+also delete the failed release tag from Github.
+
 ### The first time
 
 When you merge a pull request into master, if the package passes all tests, coverage, format and linting
@@ -40,9 +47,9 @@ For this to work you'll need to setup an API key for the project.
 
 ### Build a package and upload it to PyPI
 
-* Run: `make release`
+* Run: `make initialrelease`
 * Type in a release message for the intial release
-* Run: `tox -e publish --run-command "twine upload -u eng@list.hypothes.is -p <PASSWORD_HERE> dist/*"`
+* Run: `tox -e initialrelease --run-command "twine upload -u eng@list.hypothes.is -p <PASSWORD_HERE> dist/*"`
   
 ### Create an API key in PyPI  
 
