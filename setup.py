@@ -14,8 +14,8 @@ class Package:
         self.version = metadata["version"]
 
     def tests_require(self):
-        requirements = self.options["tests_require"] + self.install_requires()
-        requirements.extend(self.read_requirements_file("requirements.test.txt")
+        requirements = self.options.get("tests_require", []) + self.install_requires()
+        requirements.extend(self.read_requirements_file("requirements.test.txt"))
         return requirements
 
     def install_requires(self):
