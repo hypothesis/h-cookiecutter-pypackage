@@ -64,7 +64,7 @@ class TestVersionSuggester:
     def empty_dir(self, tmpdir):
         current_dir = os.getcwd()
 
-        try:
+        try:  # pylint:disable=too-many-try-statements
             os.chdir(tmpdir)
             yield tmpdir
         finally:
