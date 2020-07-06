@@ -5,6 +5,7 @@ import shutil
 from unittest import mock
 
 import pytest
+
 from bin.replay_cookie_cutter import CookieCutter, run
 
 

@@ -1,6 +1,7 @@
 import os
 
 import pytest
+
 from bin.replay_cookie_cutter import CookieCutter
 
 

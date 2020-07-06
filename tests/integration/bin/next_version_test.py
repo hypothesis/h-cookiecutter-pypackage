@@ -2,8 +2,9 @@ import os
 from unittest.mock import create_autospec
 
 import pytest
-from bin.next_version import VersionSuggester
 from packaging import version
+
+from bin.next_version import VersionSuggester
 
 
 class TestVersionSuggester:
