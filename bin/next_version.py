@@ -26,8 +26,8 @@ class VersionSuggester:
         """Find the major minor declared in the setup.cfg."""
         try:
             config = read_configuration("setup.cfg")
-        except DistutilsFileError:
-            raise FileNotFoundError("setup.cfg")
+        except DistutilsFileError as err:
+            raise FileNotFoundError("setup.cfg") from err
 
         return version.parse(config["metadata"]["version"])
 
